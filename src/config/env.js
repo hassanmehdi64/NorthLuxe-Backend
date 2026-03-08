@@ -8,6 +8,7 @@ export const env = {
     process.env.MONGODB_URI ||
     process.env.MONGO_URI ||
     "mongodb://127.0.0.1:27017/north-luxe",
+  mongoUriFallback: process.env.MONGODB_URI_FALLBACK || "",
 
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
   jwtSecret: process.env.JWT_SECRET || "change-me",

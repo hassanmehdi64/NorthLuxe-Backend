@@ -3,6 +3,12 @@ import { env } from "./env.js";
 
 let connectionPromise = null;
 
+const connectWithUri = async (uri) =>
+  mongoose.connect(uri, {
+    family: 4,
+    serverSelectionTimeoutMS: 10000,
+  });
+
 export const connectDb = async () => {
   if (!env.mongoUri) {
     throw new Error("MONGODB_URI is not configured");
@@ -15,9 +21,22 @@ export const connectDb = async () => {
   }
 
   if (!connectionPromise) {
-    connectionPromise = mongoose.connect(env.mongoUri, {
-      serverSelectionTimeoutMS: 10000,
-    });
+    connectionPromise = (async () => {
+      try {
+        return await connectWithUri(env.mongoUri);
+      } catch (primaryError) {
+        if (!env.mongoUriFallback) {
+          throw primaryError;
+        }
+
+        try {
+          return await connectWithUri(env.mongoUriFallback);
+        } catch (fallbackError) {
+          fallbackError.message = `${primaryError.message} | fallback: ${fallbackError.message}`;
+          throw fallbackError;
+        }
+      }
+    })();
   }
 
   try {

@@ -9,6 +9,7 @@ export default async function handler(req, res) {
     console.error("Database connection failed", error);
     return res.status(500).json({
       message: "Database connection failed",
+      error: error?.message || "Unknown database error",
     });
   }
 }
