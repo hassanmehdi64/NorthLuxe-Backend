@@ -22,7 +22,13 @@ const app = express();
 
 app.use(
   cors({
-    origin: env.clientOrigin,
+    origin: (origin, callback) => {
+      // Allow non-browser requests and explicit trusted frontends.
+      if (!origin || env.clientOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   }),
 );

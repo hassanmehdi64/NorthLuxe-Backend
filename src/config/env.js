@@ -3,6 +3,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const isVercel = Boolean(process.env.VERCEL);
+const configuredOrigins = String(process.env.CLIENT_ORIGIN || "")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
+const defaultOrigins = [
+  "http://localhost:5173",
+  "https://north-luxe-travels-frontend.vercel.app",
+];
 
 export const env = {
   port: Number(process.env.PORT || 5000),
@@ -13,6 +21,7 @@ export const env = {
   mongoUriFallback: process.env.MONGODB_URI_FALLBACK || "",
 
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
+  clientOrigins: Array.from(new Set([...configuredOrigins, ...defaultOrigins])),
   jwtSecret: process.env.JWT_SECRET || "change-me",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
   adminEmail: process.env.ADMIN_EMAIL || "admin@northluxe.com",
