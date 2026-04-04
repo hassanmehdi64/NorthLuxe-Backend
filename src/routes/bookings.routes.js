@@ -47,6 +47,12 @@ const toBookingResponse = (booking) => ({
   paymentIntentId: booking.paymentIntentId,
   paymentVerified: Boolean(booking.paymentVerified),
   transactionReference: booking.transactionReference,
+  manualPayment: {
+    senderName: booking.manualPayment?.senderName || "",
+    senderNumber: booking.manualPayment?.senderNumber || "",
+    sentAmount: booking.manualPayment?.sentAmount || 0,
+    sentAt: booking.manualPayment?.sentAt ? booking.manualPayment.sentAt.toISOString() : "",
+  },
   paymentHistory: booking.paymentHistory || [],
   pricingBreakdown: booking.pricingBreakdown || {},
   bookingType: booking.bookingType || "standard",
@@ -142,14 +148,19 @@ router.post(
     const paidAmount = paymentVerified ? advanceAmount : 0;
     const remainingAmount = Math.max(0, totalAmount - paidAmount);
     const paymentMethod = payload.paymentMethod || "visa_card";
-    const requireVerifiedCard = Boolean(settings.paymentConfig?.requireVerifiedPaymentForCard);
-
-    if (paymentMethod === "visa_card" && requireVerifiedCard && !paymentVerified) {
-      return res.status(400).json({
-        message: "Card payment must be verified before confirming booking.",
-      });
-    }
-
+    const manualPayment = ["visa_card", "pay_on_arrival"].includes(paymentMethod)
+      ? {
+          senderName: "",
+          senderNumber: "",
+          sentAmount: 0,
+          sentAt: null,
+        }
+      : {
+          senderName: payload.manualPayment?.senderName || "",
+          senderNumber: payload.manualPayment?.senderNumber || "",
+          sentAmount: Number(payload.manualPayment?.sentAmount || 0),
+          sentAt: payload.manualPayment?.sentAt || null,
+        };
     const hasManualReference = Boolean(payload.transactionReference?.trim());
     const paymentStatus = paymentVerified
       ? paidAmount >= totalAmount
@@ -184,6 +195,7 @@ router.post(
       paymentIntentId: payload.paymentIntentId || "",
       paymentVerified,
       transactionReference: payload.transactionReference || "",
+      manualPayment,
       paymentHistory:
         paymentVerified && advanceAmount > 0
           ? [
@@ -334,3 +346,5 @@ router.delete(
 );
 
 export default router;
+
+

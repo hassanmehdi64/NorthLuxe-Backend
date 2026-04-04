@@ -52,6 +52,16 @@ const facilitiesSchema = new mongoose.Schema(
   { _id: false },
 );
 
+const manualPaymentSchema = new mongoose.Schema(
+  {
+    senderName: { type: String, default: "" },
+    senderNumber: { type: String, default: "" },
+    sentAmount: { type: Number, default: 0 },
+    sentAt: { type: Date, default: null },
+  },
+  { _id: false },
+);
+
 const paymentHistorySchema = new mongoose.Schema(
   {
     amount: { type: Number, default: 0 },
@@ -121,6 +131,7 @@ const bookingSchema = new mongoose.Schema(
     paymentIntentId: { type: String, default: "" },
     paymentVerified: { type: Boolean, default: false },
     transactionReference: { type: String, default: "" },
+    manualPayment: { type: manualPaymentSchema, default: () => ({}) },
     paymentHistory: { type: [paymentHistorySchema], default: [] },
     pricingBreakdown: { type: pricingBreakdownSchema, default: () => ({}) },
     specialRequirements: { type: String, default: "" },

@@ -5,6 +5,13 @@ import { SiteSetting } from "../models/SiteSetting.js";
 
 const router = express.Router();
 const SETTINGS_KEY = "default";
+const SUPPORTED_PAYMENT_METHOD_KEYS = new Set([
+  "visa_card",
+  "easypaisa",
+  "jazzcash",
+  "bank_transfer",
+  "pay_on_arrival",
+]);
 
 const getOrCreateSettings = async () => {
   let settings = await SiteSetting.findOne({ key: SETTINGS_KEY });
@@ -39,6 +46,40 @@ const sanitizePricedOptions = (options = []) => {
       label: cleanString(item.label) || `Option ${index + 1}`,
       dailyRate: Number.isFinite(Number(item.dailyRate)) ? Math.max(0, Number(item.dailyRate)) : 0,
       active: Boolean(item.active),
+    }));
+};
+
+const sanitizePaymentMethods = (methods = []) => {
+  if (!Array.isArray(methods)) return undefined;
+  return methods
+    .filter((item) => isObject(item) && SUPPORTED_PAYMENT_METHOD_KEYS.has(cleanString(item.key)))
+    .map((item) => ({
+      key: cleanString(item.key),
+      label: cleanString(item.label) || cleanString(item.key),
+      active: item.active !== false,
+      accountKey: cleanString(item.accountKey) || "",
+      referenceLabel: cleanString(item.referenceLabel) || "",
+      instructions: cleanString(item.instructions) || "",
+    }));
+};
+
+const sanitizeReceivingAccounts = (accounts = []) => {
+  if (!Array.isArray(accounts)) return undefined;
+  return accounts
+    .filter((item) => isObject(item))
+    .map((item, index) => ({
+      key: cleanString(item.key) || `account_${index + 1}`,
+      label: cleanString(item.label) || `Account ${index + 1}`,
+      accountTitle: cleanString(item.accountTitle) || "",
+      accountNumber: cleanString(item.accountNumber) || "",
+      bankName: cleanString(item.bankName) || "",
+      contactNumber: cleanString(item.contactNumber) || "",
+      iban: cleanString(item.iban) || "",
+      branchCode: cleanString(item.branchCode) || "",
+      swiftCode: cleanString(item.swiftCode) || "",
+      beneficiaryAddress: cleanString(item.beneficiaryAddress) || "",
+      instructions: cleanString(item.instructions) || "",
+      active: item.active !== false,
     }));
 };
 
@@ -81,6 +122,12 @@ const buildSettingsUpdate = (payload = {}) => {
       if (payload.paymentConfig[key] !== undefined) {
         update.paymentConfig[key] = Boolean(payload.paymentConfig[key]);
       }
+    }
+    if (payload.paymentConfig.methods !== undefined) {
+      update.paymentConfig.methods = sanitizePaymentMethods(payload.paymentConfig.methods);
+    }
+    if (payload.paymentConfig.accounts !== undefined) {
+      update.paymentConfig.accounts = sanitizeReceivingAccounts(payload.paymentConfig.accounts);
     }
   }
 

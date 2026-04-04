@@ -10,6 +10,36 @@ const pricedOptionSchema = new mongoose.Schema(
   { _id: false },
 );
 
+const paymentMethodConfigSchema = new mongoose.Schema(
+  {
+    key: { type: String, required: true, trim: true },
+    label: { type: String, required: true, trim: true },
+    active: { type: Boolean, default: true },
+    accountKey: { type: String, default: "", trim: true },
+    referenceLabel: { type: String, default: "", trim: true },
+    instructions: { type: String, default: "", trim: true },
+  },
+  { _id: false },
+);
+
+const receivingAccountSchema = new mongoose.Schema(
+  {
+    key: { type: String, required: true, trim: true },
+    label: { type: String, required: true, trim: true },
+    accountTitle: { type: String, default: "", trim: true },
+    accountNumber: { type: String, default: "", trim: true },
+    bankName: { type: String, default: "", trim: true },
+    contactNumber: { type: String, default: "", trim: true },
+    iban: { type: String, default: "", trim: true },
+    branchCode: { type: String, default: "", trim: true },
+    swiftCode: { type: String, default: "", trim: true },
+    beneficiaryAddress: { type: String, default: "", trim: true },
+    instructions: { type: String, default: "", trim: true },
+    active: { type: Boolean, default: true },
+  },
+  { _id: false },
+);
+
 const siteSettingSchema = new mongoose.Schema(
   {
     key: { type: String, unique: true, required: true },
@@ -59,9 +89,25 @@ const siteSettingSchema = new mongoose.Schema(
     paymentConfig: {
       allowManualVerification: { type: Boolean, default: true },
       requireVerifiedPaymentForCard: { type: Boolean, default: true },
+      methods: {
+        type: [paymentMethodConfigSchema],
+        default: [
+          { key: "visa_card", label: "Debit Card", active: true, accountKey: "", referenceLabel: "", instructions: "" },
+          { key: "easypaisa", label: "EasyPaisa", active: true, accountKey: "", referenceLabel: "Transaction ID", instructions: "" },
+          { key: "jazzcash", label: "JazzCash", active: true, accountKey: "", referenceLabel: "Transaction ID", instructions: "" },
+          { key: "bank_transfer", label: "Bank Transfer", active: true, accountKey: "", referenceLabel: "Transfer Reference", instructions: "" },
+          { key: "pay_on_arrival", label: "Pay on Arrival", active: true, accountKey: "", referenceLabel: "", instructions: "" },
+        ],
+      },
+      accounts: {
+        type: [receivingAccountSchema],
+        default: [],
+      },
     },
   },
   { timestamps: true },
 );
 
 export const SiteSetting = mongoose.model("SiteSetting", siteSettingSchema);
+
+

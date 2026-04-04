@@ -34,4 +34,12 @@ export const env = {
   smtpPass: process.env.SMTP_PASS || "",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
+  jazzCashMerchantId: process.env.JAZZCASH_MERCHANT_ID || "",
+  jazzCashPassword: process.env.JAZZCASH_PASSWORD || "",
+  jazzCashIntegritySalt: process.env.JAZZCASH_INTEGRITY_SALT || "",
+  jazzCashRedirectUrl:
+    process.env.JAZZCASH_REDIRECT_URL ||
+    "https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/",
+  jazzCashReturnUrl: process.env.JAZZCASH_RETURN_URL || "",
+  jazzCashSandboxMode: String(process.env.JAZZCASH_SANDBOX_MODE || "true") !== "false",
 };
