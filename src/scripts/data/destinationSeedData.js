@@ -1,4 +1,66 @@
-export const destinationSeedData = [
+const destinationSeedImageExtras = {
+  "hunza-valley": [
+    "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
+    "https://luxushunza.com/wp-content/uploads/Gojal_Restaurant-1.webp",
+    "https://luxushunza.com/wp-content/uploads/slider/cache/da7922896e4ca1abc15bafab13c8151f/DSC_9668-HDR-1-scaled.jpg",
+  ],
+  "skardu": [
+    "https://clickpakistan.org/wp-content/uploads/2023/11/Best-Things-to-do-in-Skardu.jpg",
+    "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
+    "https://visitgilgitbaltistan.gov.pk/storage/images/gTH9WHnKkooBD4lDCkJglPVSGG59Qm-metaQmFzaG8gVmFsbGV5IDIuSlBH-.jpg",
+  ],
+  "fairy-meadows": [
+    "https://images.squarespace-cdn.com/content/v1/5a815ad2e45a7c1f4ef40fb8/1533222115427-RM0925EGPCZMCCN8T01S/fairy-meadows-1920.jpg",
+    "https://cdn.tripspoint.com/uploads/photos/8183/10-days-fairy-meadows-hunza-valley-pakistan_uJZ6j.jpeg",
+    "https://tripako.com/wp-content/uploads/2020/12/Fairy-1-1-scaled.jpg",
+  ],
+  "astore-valley": [
+    "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+    "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+    "https://clickpakistan.org/wp-content/uploads/2023/11/Best-Things-to-do-in-Skardu.jpg",
+  ],
+  "diamer": [
+    "https://cdn.tripspoint.com/uploads/photos/8183/10-days-fairy-meadows-hunza-valley-pakistan_uJZ6j.jpeg",
+    "https://images.squarespace-cdn.com/content/v1/5a815ad2e45a7c1f4ef40fb8/1533222115427-RM0925EGPCZMCCN8T01S/fairy-meadows-1920.jpg",
+    "https://tripako.com/wp-content/uploads/2020/12/Fairy-1-1-scaled.jpg",
+  ],
+  "gilgit": [
+    "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+    "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+    "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
+  ],
+  "khaplu": [
+    "https://luxushunza.com/wp-content/uploads/Gojal_Restaurant-1.webp",
+    "https://luxushunza.com/wp-content/uploads/slider/cache/da7922896e4ca1abc15bafab13c8151f/DSC_9668-HDR-1-scaled.jpg",
+    "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
+  ],
+  "shigar": [
+    "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
+    "https://clickpakistan.org/wp-content/uploads/2023/11/Best-Things-to-do-in-Skardu.jpg",
+    "https://visitgilgitbaltistan.gov.pk/storage/images/gTH9WHnKkooBD4lDCkJglPVSGG59Qm-metaQmFzaG8gVmFsbGV5IDIuSlBH-.jpg",
+  ],
+  "ghizer": [
+    "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+    "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+    "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
+  ],
+  "nagar-valley": [
+    "https://visitgilgitbaltistan.gov.pk/storage/images/kBAftq4Tk7vARWPMTifPQlDtHehXGV-metaUGlzYW4gQ3JpY2tldCBTdGFkaXVtLmpwZw==-.jpg",
+    "https://visitgilgitbaltistan.gov.pk/storage/images/gTH9WHnKkooBD4lDCkJglPVSGG59Qm-metaQmFzaG8gVmFsbGV5IDIuSlBH-.jpg",
+    "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+  ],
+  "deosai": [
+    "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+    "https://clickpakistan.org/wp-content/uploads/2023/11/Best-Things-to-do-in-Skardu.jpg",
+    "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+  ],
+};
+
+const ensureSeedGallery = (slug, coverImage, gallery = []) =>
+  Array.from(
+    new Set([coverImage, ...(gallery || []), ...(destinationSeedImageExtras[slug] || [])].filter(Boolean)),
+  ).slice(0, 6);
+const rawDestinationSeedData = [
   {
     type: "destination",
     title: "Hunza Valley",
@@ -302,3 +364,8 @@ In the modern era, Deosai gained protected status as a national park and became 
     sortOrder: 11,
   },
 ];
+
+export const destinationSeedData = rawDestinationSeedData.map((item) => ({
+  ...item,
+  gallery: ensureSeedGallery(item.slug, item.coverImage, item.gallery),
+}));
