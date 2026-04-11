@@ -14,6 +14,7 @@ const toTourResponse = (tour) => ({
   durationDays: tour.durationDays,
   durationLabel: tour.durationLabel || `${tour.durationDays} Days`,
   price: tour.price,
+  discountPercent: tour.discountPercent || 0,
   currency: tour.currency,
   image: tour.coverImage,
   gallery: tour.gallery,
@@ -84,6 +85,7 @@ router.post(
       durationDays: Number(payload.durationDays || 1),
       durationLabel: payload.durationLabel || "",
       price: Number(payload.price || 0),
+      discountPercent: Math.max(0, Math.min(95, Number(payload.discountPercent || 0))),
       currency: payload.currency || "USD",
       coverImage: payload.image || payload.coverImage || "",
       gallery: payload.gallery || [],
@@ -113,10 +115,12 @@ router.patch(
       coverImage: payload.image || payload.coverImage,
       reviewsCount: payload.reviews,
       availableOptions: payload.availableOptions,
+      discountPercent: payload.discountPercent === undefined ? undefined : Math.max(0, Math.min(95, Number(payload.discountPercent || 0))),
     };
     delete update.image;
     delete update.reviews;
     if (update.availableOptions === undefined) delete update.availableOptions;
+    if (update.discountPercent === undefined) delete update.discountPercent;
 
     if (payload.title && !payload.slug) {
       update.slug = slugify(payload.title);

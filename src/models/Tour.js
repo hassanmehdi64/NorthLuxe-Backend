@@ -25,6 +25,7 @@ const tourSchema = new mongoose.Schema(
     durationDays: { type: Number, required: true, min: 1 },
     durationLabel: { type: String, default: "" },
     price: { type: Number, required: true, min: 0 },
+    discountPercent: { type: Number, default: 0, min: 0, max: 95 },
     currency: { type: String, default: "USD" },
     coverImage: { type: String, required: true },
     gallery: { type: [String], default: [] },

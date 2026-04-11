@@ -37,6 +37,11 @@ const isSafeUrl = (value) => {
   }
 };
 
+const isSafeUrlList = (items) => {
+  if (!Array.isArray(items)) return false;
+  return items.every((item) => isSafeUrl(item));
+};
+
 const sanitizePricedOptions = (options = []) => {
   if (!Array.isArray(options)) return undefined;
   return options
@@ -116,6 +121,39 @@ const buildSettingsUpdate = (payload = {}) => {
     }
   }
 
+  if (payload.homeHeroImages !== undefined) {
+    update.homeHeroImages = Array.isArray(payload.homeHeroImages)
+      ? payload.homeHeroImages.map((item) => cleanString(item)).filter(Boolean)
+      : [];
+  }
+
+  if (isObject(payload.pageHeroImages)) {
+    update.pageHeroImages = {};
+    for (const key of ["tours", "about", "blog", "contact"]) {
+      if (payload.pageHeroImages[key] !== undefined) {
+        update.pageHeroImages[key] = cleanString(payload.pageHeroImages[key]);
+      }
+    }
+  }
+
+  if (isObject(payload.heroColors)) {
+    update.heroColors = {};
+    for (const key of ["overlay", "start", "middle", "end", "homeStart", "homeEnd"]) {
+      if (payload.heroColors[key] !== undefined) {
+        update.heroColors[key] = cleanString(payload.heroColors[key]);
+      }
+    }
+  }
+
+  if (isObject(payload.navbarColors)) {
+    update.navbarColors = {};
+    for (const key of ["main", "scrolled", "mobile"]) {
+      if (payload.navbarColors[key] !== undefined) {
+        update.navbarColors[key] = cleanString(payload.navbarColors[key]);
+      }
+    }
+  }
+
   if (isObject(payload.paymentConfig)) {
     update.paymentConfig = {};
     for (const key of ["allowManualVerification", "requireVerifiedPaymentForCard"]) {
@@ -178,9 +216,18 @@ router.patch(
   "/",
   asyncHandler(async (req, res) => {
     const updates = buildSettingsUpdate(req.body);
-    if (!isSafeUrl(updates.logoUrl) || !isSafeUrl(updates.faviconUrl)) {
+    const pageHeroUrls = updates.pageHeroImages
+      ? Object.values(updates.pageHeroImages).filter(Boolean)
+      : [];
+
+    if (
+      !isSafeUrl(updates.logoUrl) ||
+      !isSafeUrl(updates.faviconUrl) ||
+      (updates.homeHeroImages !== undefined && !isSafeUrlList(updates.homeHeroImages)) ||
+      !pageHeroUrls.every((item) => isSafeUrl(item))
+    ) {
       return res.status(400).json({
-        message: "Invalid logo or favicon URL. Use http(s) URL or base64 image data URL.",
+        message: "Invalid image URL found in settings. Use http(s) URLs, /local paths, or base64 image data URLs.",
       });
     }
 

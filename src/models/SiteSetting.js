@@ -60,6 +60,34 @@ const siteSettingSchema = new mongoose.Schema(
     },
     logoUrl: { type: String, default: "" },
     faviconUrl: { type: String, default: "" },
+    homeHeroImages: {
+      type: [String],
+      default: [
+        "/gb.jpg",
+        "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+        "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
+        "https://luxushunza.com/wp-content/uploads/slider/cache/da7922896e4ca1abc15bafab13c8151f/DSC_9668-HDR-1-scaled.jpg",
+      ],
+    },
+    pageHeroImages: {
+      tours: { type: String, default: "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg" },
+      about: { type: String, default: "https://www.travelertrails.com/wp-content/uploads/2022/11/Gilgit-Baltistan-4.jpg" },
+      blog: { type: String, default: "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg" },
+      contact: { type: String, default: "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg" },
+    },
+    heroColors: {
+      overlay: { type: String, default: "rgba(0, 0, 0, 0.45)" },
+      start: { type: String, default: "rgba(7, 19, 38, 0.9)" },
+      middle: { type: String, default: "rgba(7, 19, 38, 0.6)" },
+      end: { type: String, default: "rgba(7, 19, 38, 0.2)" },
+      homeStart: { type: String, default: "rgba(5, 8, 12, 0.24)" },
+      homeEnd: { type: String, default: "rgba(5, 8, 12, 0.56)" },
+    },
+    navbarColors: {
+      main: { type: String, default: "rgba(9, 20, 41, 0.88)" },
+      scrolled: { type: String, default: "rgba(9, 20, 41, 0.94)" },
+      mobile: { type: String, default: "rgba(9, 20, 41, 0.985)" },
+    },
     bookingPricing: {
       dailyBaseFee: { type: Number, default: 0, min: 0 },
       perGuestDailyFee: { type: Number, default: 0, min: 0 },

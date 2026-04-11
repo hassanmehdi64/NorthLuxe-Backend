@@ -288,6 +288,31 @@ const seed = async () => {
     address: "Main Chowk Danyore, Gilgit-Baltistan",
     currency: "USD",
     primaryColor: "#13DDB4",
+    homeHeroImages: [
+      "/gb.jpg",
+      "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+      "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
+      "https://luxushunza.com/wp-content/uploads/slider/cache/da7922896e4ca1abc15bafab13c8151f/DSC_9668-HDR-1-scaled.jpg",
+    ],
+    pageHeroImages: {
+      tours: "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+      about: "https://www.travelertrails.com/wp-content/uploads/2022/11/Gilgit-Baltistan-4.jpg",
+      blog: "https://res.cloudinary.com/www-travelpakistani-com/image/upload/v1670002655/Roundu_Valley_pakistan.jpg",
+      contact: "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
+    },
+    heroColors: {
+      overlay: "rgba(0, 0, 0, 0.45)",
+      start: "rgba(7, 19, 38, 0.9)",
+      middle: "rgba(7, 19, 38, 0.6)",
+      end: "rgba(7, 19, 38, 0.2)",
+      homeStart: "rgba(5, 8, 12, 0.24)",
+      homeEnd: "rgba(5, 8, 12, 0.56)",
+    },
+    navbarColors: {
+      main: "rgba(9, 20, 41, 0.88)",
+      scrolled: "rgba(9, 20, 41, 0.94)",
+      mobile: "rgba(9, 20, 41, 0.985)",
+    },
   });
 
   await Notification.insertMany([
