@@ -22,7 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.23.0",
     "morgan": "^1.10.1",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^8.0.5",
     "react-day-picker": "^9.13.2",
     "stripe": "^17.7.0"
   },
@@ -30,7 +30,3 @@
     "nodemon": "^3.1.13"
   }
 }
-
-
-
-

@@ -420,7 +420,7 @@ router.post(
         {
           quantity: 1,
           price_data: {
-            currency: String(booking.currency || "USD").toLowerCase(),
+            currency: String(booking.currency || "PKR").toLowerCase(),
             unit_amount: toStripeAmount(chargeAmount),
             product_data: {
               name: booking.tour?.title || "North Luxe booking",
@@ -468,7 +468,7 @@ router.post(
   "/intent",
   asyncHandler(async (req, res) => {
     const amount = Number(req.body.amount || 0);
-    const currency = (req.body.currency || "USD").toLowerCase();
+    const currency = (req.body.currency || "PKR").toLowerCase();
     const method = req.body.method || "visa_card";
     const customerName = String(req.body.customerName || "").trim();
     const email = String(req.body.email || "").trim();

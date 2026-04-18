@@ -47,7 +47,7 @@ const siteSettingSchema = new mongoose.Schema(
     siteEmail: { type: String, default: "info@northluxetravels.com" },
     sitePhone: { type: String, default: "" },
     address: { type: String, default: "" },
-    currency: { type: String, default: "USD" },
+    currency: { type: String, default: "PKR" },
     maintenanceMode: { type: Boolean, default: false },
     primaryColor: { type: String, default: "#13DDB4" },
     seoTitle: { type: String, default: "North Luxe | Luxury Travel" },

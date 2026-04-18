@@ -87,7 +87,7 @@ const customItinerarySchema = new mongoose.Schema(
     route: { type: String, default: "" },
     durationLabel: { type: String, default: "" },
     finalBudget: { type: Number, default: 0 },
-    currency: { type: String, default: "USD" },
+    currency: { type: String, default: "PKR" },
     hotelPlan: { type: String, default: "" },
     vehiclePlan: { type: String, default: "" },
     planDetails: { type: String, default: "" },
@@ -155,7 +155,7 @@ const bookingSchema = new mongoose.Schema(
     advanceAmount: { type: Number, default: 0 },
     paidAmount: { type: Number, default: 0 },
     remainingAmount: { type: Number, default: 0 },
-    currency: { type: String, default: "USD" },
+    currency: { type: String, default: "PKR" },
     paymentStatus: {
       type: String,
       enum: ["Pending", "Verification Pending", "Partially Paid", "Paid", "Failed", "Refunded"],

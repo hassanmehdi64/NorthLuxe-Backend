@@ -80,7 +80,7 @@ const toBookingResponse = (booking) => ({
         durationDays: booking.tour?.durationDays || 0,
         durationLabel: booking.tour?.durationLabel || "",
         price: booking.tour?.price || 0,
-        currency: booking.tour?.currency || booking.currency || "USD",
+        currency: "PKR",
         shortDescription: booking.tour?.shortDescription || "",
         description: booking.tour?.description || "",
         itinerary: Array.isArray(booking.tour?.itinerary) ? booking.tour.itinerary : [],
@@ -163,7 +163,7 @@ router.post(
 
     res.json({
       quote,
-      currency: tour.currency || settings.currency || "USD",
+      currency: "PKR",
       paymentConfig: settings.paymentConfig || {},
     });
   }),
@@ -294,7 +294,7 @@ router.post(
       advanceAmount,
       paidAmount,
       remainingAmount,
-      currency: payload.currency || tour?.currency || settings.currency || "USD",
+      currency: "PKR",
       paymentMethod,
       paymentIntentId: payload.paymentIntentId || "",
       paymentVerified,
@@ -425,7 +425,7 @@ router.patch(
         route: String(payload.customItinerary.route || current.customItinerary?.route || "").trim(),
         durationLabel: String(payload.customItinerary.durationLabel || current.customItinerary?.durationLabel || "").trim(),
         finalBudget: Number(payload.customItinerary.finalBudget ?? current.customItinerary?.finalBudget ?? 0),
-        currency: String(payload.customItinerary.currency || current.customItinerary?.currency || current.currency || "USD").trim() || "USD",
+        currency: "PKR",
         hotelPlan: String(payload.customItinerary.hotelPlan || current.customItinerary?.hotelPlan || "").trim(),
         vehiclePlan: String(payload.customItinerary.vehiclePlan || current.customItinerary?.vehiclePlan || "").trim(),
         planDetails: String(payload.customItinerary.planDetails || current.customItinerary?.planDetails || "").trim(),

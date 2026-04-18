@@ -6,7 +6,7 @@ export const tourPackageSeedData = [
     durationDays: 5,
     durationLabel: "5 Days / 4 Nights",
     price: 1320,
-    currency: "USD",
+    currency: "PKR",
     coverImage: "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
     gallery: [
       "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
@@ -35,7 +35,7 @@ export const tourPackageSeedData = [
     durationDays: 6,
     durationLabel: "6 Days / 5 Nights",
     price: 1480,
-    currency: "USD",
+    currency: "PKR",
     coverImage: "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
     gallery: [
       "https://realpakistan.com.pk/wp-content/uploads/2025/04/shangrila-resort.jpg",
@@ -64,7 +64,7 @@ export const tourPackageSeedData = [
     durationDays: 5,
     durationLabel: "5 Days / 4 Nights",
     price: 1190,
-    currency: "USD",
+    currency: "PKR",
     coverImage: "https://luxushunza.com/wp-content/uploads/Gojal_Restaurant-1.webp",
     gallery: [
       "https://luxushunza.com/wp-content/uploads/Gojal_Restaurant-1.webp",
@@ -93,7 +93,7 @@ export const tourPackageSeedData = [
     durationDays: 7,
     durationLabel: "7 Days / 6 Nights",
     price: 1560,
-    currency: "USD",
+    currency: "PKR",
     coverImage: "https://clickpakistan.org/wp-content/uploads/2023/11/Best-Things-to-do-in-Skardu.jpg",
     gallery: [
       "https://clickpakistan.org/wp-content/uploads/2023/11/Best-Things-to-do-in-Skardu.jpg",
@@ -122,7 +122,7 @@ export const tourPackageSeedData = [
     durationDays: 4,
     durationLabel: "4 Days / 3 Nights",
     price: 990,
-    currency: "USD",
+    currency: "PKR",
     coverImage: "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
     gallery: [
       "https://realpakistan.com.pk/wp-content/uploads/2025/06/hunza-sarena.jpg",
@@ -151,7 +151,7 @@ export const tourPackageSeedData = [
     durationDays: 5,
     durationLabel: "5 Days / 4 Nights",
     price: 1120,
-    currency: "USD",
+    currency: "PKR",
     coverImage: "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
     gallery: [
       "https://gilgitbaltistan.gov.pk/public/images/river-5688258_1920.jpg",
