@@ -23,7 +23,8 @@ const app = express();
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || env.clientOrigins.includes(origin)) {
+      const isAllowedPreview = env.clientOriginPatterns.some((pattern) => pattern.test(origin || ""));
+      if (!origin || env.clientOrigins.includes(origin) || isAllowedPreview) {
         return callback(null, true);
       }
       return callback(new Error(`CORS blocked for origin: ${origin}`));

@@ -10,7 +10,11 @@ const configuredOrigins = String(process.env.CLIENT_ORIGIN || "")
 const defaultOrigins = [
   "http://localhost:5173",
   "https://north-luxe-travels-frontend.vercel.app",
+  "https://north-luxe.vercel.app",
+  "https://northluxe.vercel.app",
 ];
+
+const defaultOriginPatterns = [/^https:\/\/[a-z0-9-]+\.vercel\.app$/i];
 
 export const env = {
   port: Number(process.env.PORT || 5000),
@@ -22,6 +26,7 @@ export const env = {
 
   clientOrigin: process.env.CLIENT_ORIGIN || "http://localhost:5173",
   clientOrigins: Array.from(new Set([...configuredOrigins, ...defaultOrigins])),
+  clientOriginPatterns: defaultOriginPatterns,
   jwtSecret: process.env.JWT_SECRET || "change-me",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
   adminEmail: process.env.ADMIN_EMAIL || "admin@northluxe.com",
