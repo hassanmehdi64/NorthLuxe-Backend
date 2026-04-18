@@ -1,21 +1,33 @@
-import nodemailer from "nodemailer";
 import { env } from "../config/env.js";
 
 const hasSmtpConfig = Boolean(env.smtpHost && env.smtpUser && env.smtpPass);
 
-const transporter = hasSmtpConfig
-  ? nodemailer.createTransport({
-      host: env.smtpHost,
-      port: env.smtpPort,
-      secure: env.smtpSecure,
-      auth: {
-        user: env.smtpUser,
-        pass: env.smtpPass,
-      },
-    })
-  : null;
+let transporterPromise = null;
+
+const getTransporter = async () => {
+  if (!hasSmtpConfig) {
+    return null;
+  }
+
+  if (!transporterPromise) {
+    transporterPromise = import("nodemailer").then(({ default: nodemailer }) =>
+      nodemailer.createTransport({
+        host: env.smtpHost,
+        port: env.smtpPort,
+        secure: env.smtpSecure,
+        auth: {
+          user: env.smtpUser,
+          pass: env.smtpPass,
+        },
+      }),
+    );
+  }
+
+  return transporterPromise;
+};
 
 const deliverMail = async ({ to, subject, text, html }) => {
+  const transporter = await getTransporter();
   if (!transporter) {
     console.log(`[Email preview] To: ${to}\nSubject: ${subject}\n${text}`);
     return;
