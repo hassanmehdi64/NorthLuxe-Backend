@@ -29,8 +29,7 @@ const getTransporter = async () => {
 const deliverMail = async ({ to, subject, text, html }) => {
   const transporter = await getTransporter();
   if (!transporter) {
-    console.log(`[Email preview] To: ${to}\nSubject: ${subject}\n${text}`);
-    return;
+    throw new Error("SMTP is not configured. Add SMTP_HOST, SMTP_USER, and SMTP_PASS in the backend environment.");
   }
   await transporter.sendMail({
     from: env.emailFrom,
@@ -44,6 +43,7 @@ const deliverMail = async ({ to, subject, text, html }) => {
 export const sendMailSafely = async (mailOptions) => {
   try {
     await deliverMail(mailOptions);
+    console.log(`[Email sent] To: ${mailOptions.to} | Subject: ${mailOptions.subject}`);
     return true;
   } catch (error) {
     console.error("[Email failed]", error?.message || error);
