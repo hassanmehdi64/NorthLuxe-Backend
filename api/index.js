@@ -1,19 +1,21 @@
-import app from "../src/app.js";
-import { connectDb } from "../src/config/db.js";
-
 export default async function handler(req, res) {
+  if (req.url === "/api/health" || req.url === "/health" || req.url === "/") {
+    return res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+  }
+
   try {
-    if (req.url === "/api/health" || req.url === "/health") {
-      return res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
-    }
+    const [{ default: app }, { connectDb }] = await Promise.all([
+      import("../src/app.js"),
+      import("../src/config/db.js"),
+    ]);
 
     await connectDb();
     return app(req, res);
   } catch (error) {
-    console.error("Database connection failed", error);
+    console.error("Backend function failed", error);
     return res.status(500).json({
-      message: "Database connection failed",
-      error: error?.message || "Unknown database error",
+      message: "Backend function failed",
+      error: error?.message || "Unknown server error",
     });
   }
 }
