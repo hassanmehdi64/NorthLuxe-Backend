@@ -4,6 +4,30 @@ const hasSmtpConfig = Boolean(env.smtpHost && env.smtpUser && env.smtpPass);
 
 let transporterPromise = null;
 
+const maskEmail = (value = "") => {
+  const [name, domain] = String(value).split("@");
+  if (!name || !domain) return Boolean(value) ? "<set>" : "";
+  return `${name.slice(0, 2)}***@${domain}`;
+};
+
+export const getEmailConfigStatus = () => {
+  const from = env.emailFrom
+    ? env.emailFrom.replace(/<([^>]+)>/, (_match, email) => `<${maskEmail(email)}>`)
+    : "";
+
+  return {
+    configured: hasSmtpConfig,
+    hostSet: Boolean(env.smtpHost),
+    port: env.smtpPort,
+    secure: env.smtpSecure,
+    userSet: Boolean(env.smtpUser),
+    passSet: Boolean(env.smtpPass),
+    user: maskEmail(env.smtpUser),
+    fromSet: Boolean(env.emailFrom),
+    from,
+  };
+};
+
 const getTransporter = async () => {
   if (!hasSmtpConfig) {
     return null;
@@ -24,6 +48,15 @@ const getTransporter = async () => {
   }
 
   return transporterPromise;
+};
+
+export const verifyEmailTransport = async () => {
+  const transporter = await getTransporter();
+  if (!transporter) {
+    throw new Error("SMTP is not configured. Add SMTP_HOST, SMTP_USER, and SMTP_PASS in the backend environment.");
+  }
+  await transporter.verify();
+  return true;
 };
 
 const deliverMail = async ({ to, subject, text, html }) => {

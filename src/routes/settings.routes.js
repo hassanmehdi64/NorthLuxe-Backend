@@ -2,6 +2,7 @@ import express from "express";
 import { asyncHandler } from "../middleware/asyncHandler.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 import { SiteSetting } from "../models/SiteSetting.js";
+import { getEmailConfigStatus, sendMailSafely, verifyEmailTransport } from "../utils/email.js";
 
 const router = express.Router();
 const SETTINGS_KEY = "default";
@@ -209,6 +210,44 @@ router.get(
   asyncHandler(async (_req, res) => {
     const settings = await getOrCreateSettings();
     res.json({ item: settings });
+  }),
+);
+
+router.get(
+  "/email/status",
+  asyncHandler(async (_req, res) => {
+    res.json({ item: getEmailConfigStatus() });
+  }),
+);
+
+router.post(
+  "/email/verify",
+  asyncHandler(async (_req, res) => {
+    await verifyEmailTransport();
+    res.json({ ok: true, message: "SMTP connection verified." });
+  }),
+);
+
+router.post(
+  "/email/test",
+  asyncHandler(async (req, res) => {
+    const to = String(req.body?.to || req.user?.email || "").trim();
+    if (!to) return res.status(400).json({ message: "Test email recipient is required." });
+
+    const sent = await sendMailSafely({
+      to,
+      subject: "North Luxe SMTP test",
+      text: "SMTP is configured and able to send mail from the production backend.",
+      html: "<p>SMTP is configured and able to send mail from the production backend.</p>",
+    });
+
+    if (!sent) {
+      return res.status(502).json({
+        message: "SMTP test failed. Check Vercel Function Logs for the [Email failed] entry.",
+      });
+    }
+
+    res.json({ ok: true, message: `Test email sent to ${to}.` });
   }),
 );
 
