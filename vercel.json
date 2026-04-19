@@ -3,10 +3,7 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 30,
-      "includeFiles": [
-        "node_modules/nodemailer/**",
-        "node_modules/nodemailer/lib/errors.js"
-      ]
+      "includeFiles": "node_modules/nodemailer/**"
     }
   },
   "routes": [
