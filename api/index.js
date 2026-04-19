@@ -4,12 +4,21 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [{ default: app }, { connectDb }] = await Promise.all([
+    const [{ default: app }, { connectDb, getDbStatus }] = await Promise.all([
       import("../src/app.js"),
       import("../src/config/db.js"),
     ]);
 
     await connectDb();
+
+    if (req.url === "/api/health/db" || req.url === "/health/db") {
+      return res.status(200).json({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        database: getDbStatus(),
+      });
+    }
+
     return app(req, res);
   } catch (error) {
     console.error("Backend function failed", error);
