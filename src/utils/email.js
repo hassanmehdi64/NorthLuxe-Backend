@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 import { env } from "../config/env.js";
 
 const hasSmtpConfig = Boolean(env.smtpHost && env.smtpUser && env.smtpPass);
@@ -34,7 +35,7 @@ const getTransporter = async () => {
   }
 
   if (!transporterPromise) {
-    transporterPromise = import("nodemailer").then(({ default: nodemailer }) =>
+    transporterPromise = Promise.resolve(
       nodemailer.createTransport({
         host: env.smtpHost,
         port: env.smtpPort,
