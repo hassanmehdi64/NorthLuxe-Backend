@@ -1,4 +1,3 @@
-import "nodemailer/lib/errors.js";
 import { env } from "../config/env.js";
 
 const hasSmtpConfig = Boolean(env.smtpHost && env.smtpUser && env.smtpPass);

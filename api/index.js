@@ -1,31 +1,43 @@
 export default async function handler(req, res) {
-  if (req.url === "/api/version" || req.url === "/version") {
+  const requestPath = String(req.url || "").split("?")[0];
+
+  if (requestPath === "/api/version" || requestPath === "/version") {
     return res.status(200).json({
       status: "ok",
-      version: "smtp-lazy-load-2026-04-19",
+      version: "backend-health-decoupled-2026-04-19",
       timestamp: new Date().toISOString(),
     });
   }
 
-  if (req.url === "/api/health" || req.url === "/health" || req.url === "/") {
+  if (requestPath === "/api" || requestPath === "/api/health" || requestPath === "/health" || requestPath === "/") {
     return res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
   }
 
-  try {
-    const [{ default: app }, { connectDb, getDbStatus }] = await Promise.all([
-      import("../src/app.js"),
-      import("../src/config/db.js"),
-    ]);
-
-    await connectDb();
-
-    if (req.url === "/api/health/db" || req.url === "/health/db") {
+  if (requestPath === "/api/health/db" || requestPath === "/health/db") {
+    try {
+      const { connectDb, getDbStatus } = await import("../src/config/db.js");
+      await connectDb();
       return res.status(200).json({
         status: "ok",
         timestamp: new Date().toISOString(),
         database: getDbStatus(),
       });
+    } catch (error) {
+      console.error("Database health check failed", error);
+      return res.status(500).json({
+        message: "Database health check failed",
+        error: error?.message || "Unknown database error",
+      });
     }
+  }
+
+  try {
+    const [{ default: app }, { connectDb }] = await Promise.all([
+      import("../src/app.js"),
+      import("../src/config/db.js"),
+    ]);
+
+    await connectDb();
 
     return app(req, res);
   } catch (error) {
