@@ -16,6 +16,7 @@ import settingsRoutes from "./routes/settings.routes.js";
 import testimonialsRoutes from "./routes/testimonials.routes.js";
 import toursRoutes from "./routes/tours.routes.js";
 import usersRoutes from "./routes/users.routes.js";
+import { getDbStatus } from "./config/db.js";
 import { errorHandler, notFound } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -40,6 +41,14 @@ app.use(morgan("dev"));
 
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.get("/api/health/db", (_req, res) => {
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    database: getDbStatus(),
+  });
 });
 
 app.use("/api/auth", authRoutes);

@@ -1,22 +1,23 @@
-import app from "../app.js";
+import app from "./app.js";
 import { connectDb } from "./config/db.js";
+import { env } from "./config/env.js";
 
-let isConnected = false;
+const start = async () => {
+  await connectDb();
+  const server = app.listen(env.port, "0.0.0.0", () => {
+    console.log(`API running on http://localhost:${env.port}`);
+  });
 
-export default async function handler(req, res) {
-  try {
-    if (!isConnected) {
-      await connectDb();
-      isConnected = true;
-    }
+  server.on("error", (error) => {
+    console.error("API server error", error);
+  });
 
-    return app(req, res);
-  } catch (error) {
-    console.error("Vercel function error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
-  }
-}
+  server.on("close", () => {
+    console.log("API server closed");
+  });
+};
+
+start().catch((error) => {
+  console.error("Failed to start server", error);
+  process.exit(1);
+});
