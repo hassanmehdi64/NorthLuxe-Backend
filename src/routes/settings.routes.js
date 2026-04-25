@@ -28,21 +28,21 @@ const getOrCreateSettings = async () => {
   const navbarColors = settings.navbarColors || {};
   const footerColors = settings.footerColors || {};
   const missingNavbarColorDefaults = {};
-  if (settings.logoUrl !== DEFAULT_LOGO_URL) missingNavbarColorDefaults.logoUrl = DEFAULT_LOGO_URL;
-  if (settings.primaryColor !== BRAND_COLOR) missingNavbarColorDefaults.primaryColor = BRAND_COLOR;
-  if (navbarColors.main !== NAVY_COLOR) missingNavbarColorDefaults["navbarColors.main"] = NAVY_COLOR;
-  if (navbarColors.scrolled !== NAVY_COLOR) missingNavbarColorDefaults["navbarColors.scrolled"] = NAVY_COLOR;
-  if (navbarColors.mobile !== NAVY_COLOR) missingNavbarColorDefaults["navbarColors.mobile"] = NAVY_COLOR;
-  if (navbarColors.text !== NAV_TEXT_COLOR) missingNavbarColorDefaults["navbarColors.text"] = NAV_TEXT_COLOR;
-  if (navbarColors.mutedText !== NAV_MUTED_TEXT_COLOR) missingNavbarColorDefaults["navbarColors.mutedText"] = NAV_MUTED_TEXT_COLOR;
-  if (navbarColors.activeText !== BRAND_COLOR) missingNavbarColorDefaults["navbarColors.activeText"] = BRAND_COLOR;
-  if (settings.navbarTextColor !== NAV_TEXT_COLOR) missingNavbarColorDefaults.navbarTextColor = NAV_TEXT_COLOR;
-  if (settings.navbarMutedTextColor !== NAV_MUTED_TEXT_COLOR) missingNavbarColorDefaults.navbarMutedTextColor = NAV_MUTED_TEXT_COLOR;
-  if (settings.navbarActiveTextColor !== BRAND_COLOR) missingNavbarColorDefaults.navbarActiveTextColor = BRAND_COLOR;
-  if (footerColors.background !== NAVY_COLOR) missingNavbarColorDefaults["footerColors.background"] = NAVY_COLOR;
-  if (footerColors.text !== NAV_TEXT_COLOR) missingNavbarColorDefaults["footerColors.text"] = NAV_TEXT_COLOR;
-  if (footerColors.mutedText !== FOOTER_MUTED_TEXT_COLOR) missingNavbarColorDefaults["footerColors.mutedText"] = FOOTER_MUTED_TEXT_COLOR;
-  if (footerColors.accentText !== BRAND_COLOR) missingNavbarColorDefaults["footerColors.accentText"] = BRAND_COLOR;
+  if (!settings.logoUrl) missingNavbarColorDefaults.logoUrl = DEFAULT_LOGO_URL;
+  if (!settings.primaryColor) missingNavbarColorDefaults.primaryColor = BRAND_COLOR;
+  if (!navbarColors.main) missingNavbarColorDefaults["navbarColors.main"] = NAVY_COLOR;
+  if (!navbarColors.scrolled) missingNavbarColorDefaults["navbarColors.scrolled"] = NAVY_COLOR;
+  if (!navbarColors.mobile) missingNavbarColorDefaults["navbarColors.mobile"] = NAVY_COLOR;
+  if (!navbarColors.text) missingNavbarColorDefaults["navbarColors.text"] = NAV_TEXT_COLOR;
+  if (!navbarColors.mutedText) missingNavbarColorDefaults["navbarColors.mutedText"] = NAV_MUTED_TEXT_COLOR;
+  if (!navbarColors.activeText) missingNavbarColorDefaults["navbarColors.activeText"] = BRAND_COLOR;
+  if (!settings.navbarTextColor) missingNavbarColorDefaults.navbarTextColor = NAV_TEXT_COLOR;
+  if (!settings.navbarMutedTextColor) missingNavbarColorDefaults.navbarMutedTextColor = NAV_MUTED_TEXT_COLOR;
+  if (!settings.navbarActiveTextColor) missingNavbarColorDefaults.navbarActiveTextColor = BRAND_COLOR;
+  if (!footerColors.background) missingNavbarColorDefaults["footerColors.background"] = NAVY_COLOR;
+  if (!footerColors.text) missingNavbarColorDefaults["footerColors.text"] = NAV_TEXT_COLOR;
+  if (!footerColors.mutedText) missingNavbarColorDefaults["footerColors.mutedText"] = FOOTER_MUTED_TEXT_COLOR;
+  if (!footerColors.accentText) missingNavbarColorDefaults["footerColors.accentText"] = BRAND_COLOR;
 
   if (Object.keys(missingNavbarColorDefaults).length) {
     settings = await SiteSetting.findOneAndUpdate(
@@ -60,25 +60,25 @@ const toSettingsResponse = (settings) => {
 
   return {
     ...item,
-    logoUrl: DEFAULT_LOGO_URL,
-    primaryColor: BRAND_COLOR,
-    brandHoverColor: BRAND_HOVER_COLOR,
-    navbarTextColor: NAV_TEXT_COLOR,
-    navbarMutedTextColor: NAV_MUTED_TEXT_COLOR,
-    navbarActiveTextColor: BRAND_COLOR,
+    logoUrl: item.logoUrl || DEFAULT_LOGO_URL,
+    primaryColor: item.primaryColor || BRAND_COLOR,
+    brandHoverColor: item.brandHoverColor || BRAND_HOVER_COLOR,
+    navbarTextColor: item.navbarTextColor || NAV_TEXT_COLOR,
+    navbarMutedTextColor: item.navbarMutedTextColor || NAV_MUTED_TEXT_COLOR,
+    navbarActiveTextColor: item.navbarActiveTextColor || BRAND_COLOR,
     navbarColors: {
-      main: NAVY_COLOR,
-      scrolled: NAVY_COLOR,
-      mobile: NAVY_COLOR,
-      text: NAV_TEXT_COLOR,
-      mutedText: NAV_MUTED_TEXT_COLOR,
-      activeText: BRAND_COLOR,
+      main: item.navbarColors?.main || NAVY_COLOR,
+      scrolled: item.navbarColors?.scrolled || NAVY_COLOR,
+      mobile: item.navbarColors?.mobile || NAVY_COLOR,
+      text: item.navbarColors?.text || NAV_TEXT_COLOR,
+      mutedText: item.navbarColors?.mutedText || NAV_MUTED_TEXT_COLOR,
+      activeText: item.navbarColors?.activeText || BRAND_COLOR,
     },
     footerColors: {
-      background: NAVY_COLOR,
-      text: NAV_TEXT_COLOR,
-      mutedText: FOOTER_MUTED_TEXT_COLOR,
-      accentText: BRAND_COLOR,
+      background: item.footerColors?.background || NAVY_COLOR,
+      text: item.footerColors?.text || NAV_TEXT_COLOR,
+      mutedText: item.footerColors?.mutedText || FOOTER_MUTED_TEXT_COLOR,
+      accentText: item.footerColors?.accentText || BRAND_COLOR,
     },
   };
 };
