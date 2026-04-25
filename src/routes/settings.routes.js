@@ -273,6 +273,9 @@ const buildSettingsUpdate = (payload = {}) => {
         update.bookingPricing[key] = Number.isFinite(number) ? Math.max(0, number) : 0;
       }
     }
+    if (payload.bookingPricing.transportNote !== undefined) {
+      update.bookingPricing.transportNote = cleanString(payload.bookingPricing.transportNote) || "";
+    }
     if (payload.bookingPricing.hotelCategories !== undefined) {
       update.bookingPricing.hotelCategories = sanitizePricedOptions(payload.bookingPricing.hotelCategories);
     }

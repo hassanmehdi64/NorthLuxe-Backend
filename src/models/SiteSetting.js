@@ -112,6 +112,11 @@ const siteSettingSchema = new mongoose.Schema(
       mealsDailyRate: { type: Number, default: 0, min: 0 },
       insuranceRate: { type: Number, default: 0, min: 0 },
       airportTransferRate: { type: Number, default: 0, min: 0 },
+      transportNote: {
+        type: String,
+        default:
+          "Prices are for transport only. Hotels, meals, boating, entry tickets, jeep charges, and personal expenses are not included.",
+      },
       hotelCategories: {
         type: [pricedOptionSchema],
         default: [
